@@ -12,34 +12,40 @@ function parseCSV(fileContent) {
   const rows = getAllRows(fileContent);
   const columnTitles = rows[0].split(',');
   const dataRows = rows.slice(1);
-  console.log(dataRows);
-  createTable(columnTitles);
+  createTable(columnTitles, dataRows);
 }
 
 function getAllRows(fileContent) {
   return fileContent.split('\r\n');
 }
 
-function makeTableColumnNamesHTML(columnTitles) {
-  let tableDataCells = '';
-  for (let column of columnTitles) {
-    tableDataCells = tableDataCells + `<td>${column}</td>`;
+function makeTableCellsFromRow(rowContents) {
+  let tableHeadDataCells = '';
+  for (let content of rowContents) {
+    tableHeadDataCells = tableHeadDataCells + `<td>${content}</td>`;
   }
-  return tableDataCells;
+  return tableHeadDataCells;
 }
 
-function makeTableRowsHTML(dataRows) {}
+function makeTableRowsHTML(dataRows) {
+  let tableRowHTML = '';
+  for (let row of dataRows) {
+    tableRowHTML = tableRowHTML + `<tr>${makeTableCellsFromRow(row.split(','))}</tr>`;
+  }
 
-function createTable(columnTitles) {
+  return tableRowHTML;
+}
+
+function createTable(columnTitles, dataRows) {
   const table = `
     <table class="result-table">
       <thead>
         <tr>
-        ${makeTableColumnNamesHTML(columnTitles)}
+          ${makeTableCellsFromRow(columnTitles)}
         </tr>
       </thead>
       <tbody>
-
+        ${makeTableRowsHTML(dataRows)}
       </tbody>
     </table>
   `;
