@@ -10,7 +10,7 @@ function readCSV(event) {
 
 function parseCSV(fileContent) {
   const rows = getAllRows(fileContent);
-  const columnTitles = rows[0].split(',');
+  const columnTitles = rows[0].split(','); // row split logic
   const dataRows = rows.slice(1);
   createTable(columnTitles, dataRows);
 }
@@ -20,6 +20,7 @@ function getAllRows(fileContent) {
 }
 
 function makeTableCellsFromRow(rowContents) {
+  // doing the same thing as the function below this but with <tr />
   let tableHeadDataCells = '';
   for (let content of rowContents) {
     tableHeadDataCells = tableHeadDataCells + `<td>${content}</td>`;
@@ -27,12 +28,11 @@ function makeTableCellsFromRow(rowContents) {
   return tableHeadDataCells;
 }
 
-function makeTableRowsHTML(dataRows) {
+function makeTableRowsFromData(dataRows) {
   let tableRowHTML = '';
   for (let row of dataRows) {
-    tableRowHTML = tableRowHTML + `<tr>${makeTableCellsFromRow(row.split(','))}</tr>`;
+    tableRowHTML = tableRowHTML + `<tr>${makeTableCellsFromRow(row.split(','))}</tr>`; // row split logic - repeated as above
   }
-
   return tableRowHTML;
 }
 
@@ -45,7 +45,7 @@ function createTable(columnTitles, dataRows) {
         </tr>
       </thead>
       <tbody>
-        ${makeTableRowsHTML(dataRows)}
+        ${makeTableRowsFromData(dataRows)}
       </tbody>
     </table>
   `;
