@@ -8,6 +8,9 @@ function readCSV(event) {
   };
 }
 
+// change the split logic
+// when ignore commas that are between single or double quotes
+
 function parseCSV(fileContent) {
   const rows = getAllRows(fileContent);
   const columnTitles = rows[0].split(','); // row split logic
@@ -31,9 +34,23 @@ function makeTableCellsFromRow(rowContents) {
 function makeTableRowsFromData(dataRows) {
   let tableRowHTML = '';
   for (let row of dataRows) {
-    tableRowHTML = tableRowHTML + `<tr>${makeTableCellsFromRow(row.split(','))}</tr>`; // row split logic - repeated as above
+    tableRowHTML = tableRowHTML + `<tr>${makeTableCellsFromRow(csvRowSplitter(row))}</tr>`; // row split logic - repeated as above
   }
   return tableRowHTML;
+}
+
+function csvRowSplitter(row) {
+  let cellStart = 0;
+  let cellEnd = 0;
+  let cellsList = [];
+  for (let i = 0; i < row.length; i++) {
+    if (row[i] === ',') {
+      cellStart = i + 1;
+      cellEnd = i;
+      console.log(i);
+    }
+  }
+  return row.split(',')
 }
 
 function createTable(columnTitles, dataRows) {
